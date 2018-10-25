@@ -50,6 +50,7 @@
       </GetMap>
      </Request> 
     <Layer queryable="0">
+    <Name>1</Name>
       <Title><![CDATA[Budovy]]></Title>
 <CRS>EPSG:5514</CRS>
  <!-- alias 5514 -->
@@ -58,6 +59,7 @@
 <BoundingBox CRS="EPSG:5514" minx="-507668.121" miny="-1218115.828" maxx="-511572.982" maxy="-1222268.772"/>
 </Layer>
 <Layer queryable="0">
+<Name>2</Name>
         <Title><![CDATA[Cesty]]></Title>
         <Abstract><![CDATA[]]></Abstract>
 <CRS>EPSG:5514</CRS>
