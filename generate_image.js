@@ -23,13 +23,13 @@ var proj = "+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813972
 var style_budovy='<Style name="style_budovy">' + // style for layer "style_budovy"
 '<Rule>' +
     '<LineSymbolizer stroke="black" stroke-width="0.1" />' + // style for lines
-    '<PolygonSymbolizer fill="#f2cfaf"  />' + // style for polygons
+    '<PolygonSymbolizer fill="#91e1d9" fill-opacity="0.5" />' + // style for polygons
 '</Rule>' +
 '</Style>' 
 
 var style_cesty='<Style name="style_cesty">' + // style for layer "style_cesty"
 '<Rule>' +
-    '<LineSymbolizer stroke="#d7c8b9" stroke-width="0.8" />' + // style for lines
+    '<LineSymbolizer stroke="#a9a9a9" stroke-width="0.8" />' + // style for lines
 '</Rule>' +
 '</Style>' 
 
