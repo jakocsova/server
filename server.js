@@ -9,6 +9,8 @@ console.log(generateImage);
 
 var PORT=3021;
 
+server.use(express.static('icon'));
+
 
 server.get('/wms', function (request, response) {
     var params=request.query;
