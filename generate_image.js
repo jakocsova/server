@@ -25,81 +25,92 @@ var proj = "+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813972
 
 var style_budovy='<Style name="style_budovy">' + // style for layer "style_budovy"
 '<Rule>' +
-    '<LineSymbolizer stroke="black" stroke-width="0.4" />' + // style for lines
-    '<PolygonSymbolizer fill="#d4bf8d"  />' + // style for polygons
+    '<LineSymbolizer stroke="black" stroke-width="0.8" />' + // style for lines
+    '<PolygonSymbolizer fill="#d1ed6d"  />' + // style for polygons
     '</Rule>' +
     '</Style>' 
     
 var style_cesty='<Style name="style_cesty">' + // style for layer "style_cesty"
 '<Rule>' +
-    '<LineSymbolizer stroke="#a9a9a9" stroke-width="1.8" />' + // style for lines
+    '<LineSymbolizer stroke="#a9a9a9" stroke-width="2.5" />' + // style for lines
     '</Rule>' +
 '</Style>' 
 
 var style_lavicky='<Style name="style_lavicky">' + // style for layer "style_lavicky"
 '<Rule>' +
-'<MaxScaleDenominator>11732</MaxScaleDenominator>' +
+'<MaxScaleDenominator>5866</MaxScaleDenominator>' +
 '<MinScaleDenominator>200</MinScaleDenominator>'+
-'<PointSymbolizer file= "./icon/lavicka4.png" transform="scale(0.1,0.1)" />'+
+'<MarkersSymbolizer file="./icon/lavicka4.png" width="20" height="20"  />'+
 '</Rule>' +
 '</Style>' 
 var style_odpad='<Style name="style_odpad">' + // style for layer "style_lavicky"
 '<Rule>' +
-'<MaxScaleDenominator>11732</MaxScaleDenominator>' +
+'<MaxScaleDenominator>5866</MaxScaleDenominator>' +
 '<MinScaleDenominator>200</MinScaleDenominator>'+
-'<PointSymbolizer file= "./icon/odpad.png" transform="scale(0.02,0.02)" />'+
+'<MarkersSymbolizer file="./icon/odpad.png" width="15" height="15" />'+
 '</Rule>' +
 '</Style>' 
 
 var style_parkovisko='<Style name="style_parkovisko">' + // style for layer "style_lavicky"
 '<Rule>' +
-'<LineSymbolizer stroke="black" stroke-width="0.4" />' + // style for lines
-'<PolygonSymbolizer fill="#71ffff"  />' + // style for polygons
+'<LineSymbolizer stroke="black" stroke-width="0.8" />' + // style for lines
+'<PolygonSymbolizer fill="#40e0dd"  />' + 
 '</Rule>' +
 '</Style>' 
+
+var layer_budovy = '<Layer name="budovy" srs="'+proj+'">' + // same as above
+'<StyleName>style_budovy</StyleName>' +
+'<Datasource>' +
+'<Parameter name="file">' + path.join( __dirname, 'data/budovy.shp' ) +'</Parameter>' +
+'<Parameter name="type">shape</Parameter>' +
+'</Datasource>' +
+'</Layer>' 
+
+var layer_cesty = '<Layer name="cesty" srs="'+proj+'">' + // layer "cesty" with spatial reference system
+'<StyleName>style_cesty</StyleName>' + // binding of a style used for this layer => "style_cesty"
+'<Datasource>' + // definition of a data source
+'<Parameter name="file">' + path.join( __dirname, 'data/cesty.shp' ) +'</Parameter>' + // path to the data file
+'<Parameter name="type">shape</Parameter>' + // file type
+'</Datasource>' +
+'</Layer>'
+
+var layer_odpad = '<Layer name="odpad" srs="'+proj+'">' + // same as above
+'<StyleName>style_odpad</StyleName>' +
+'<Datasource>' +
+'<Parameter name="file">' + path.join( __dirname, 'data/odpad.shp' ) +'</Parameter>' +
+'<Parameter name="type">shape</Parameter>' +
+'</Datasource>' +
+'</Layer>'
+
+var layer_parkovisko = '<Layer name="parkovisko" srs="'+proj+'">' + // same as above
+'<StyleName>style_parkovisko</StyleName>' +
+'<Datasource>' +
+'<Parameter name="file">' + path.join( __dirname, 'data/parkovisko.shp' ) +'</Parameter>' +
+'<Parameter name="type">shape</Parameter>' +
+'</Datasource>' +
+'</Layer>' 
+
+var layer_lavicky = '<Layer name="lavicky" srs="'+proj+'">' + // same as above
+'<StyleName>style_lavicky</StyleName>' +
+'<Datasource>' +
+'<Parameter name="file">' + path.join( __dirname, 'data/lavicky.shp' ) +'</Parameter>' +
+'<Parameter name="type">shape</Parameter>' +
+'</Datasource>' +
+'</Layer>' 
    
 // schema of the rendered map
-var schema = '<Map background-color="#f7e5dd" srs="'+proj+'">' + // we define background color of the map and its spatial reference system with epsg code of data used
-                (addBudovy ? style_budovy : ' ') +
-                '<Layer name="cesty" srs="'+proj+'">' + // layer "cesty" with spatial reference system
-                '<StyleName>style_cesty</StyleName>' + // binding of a style used for this layer => "style_cesty"
-                '<Datasource>' + // definition of a data source
-                '<Parameter name="file">' + path.join( __dirname, 'data/cesty.shp' ) +'</Parameter>' + // path to the data file
-                '<Parameter name="type">shape</Parameter>' + // file type
-                '</Datasource>' +
-                '</Layer>' +
+var schema = '<Map background-color="#f6f6f6" srs="'+proj+'">' + // we define background color of the map and its spatial reference system with epsg code of data used
+                (addBudovy ? style_budovy : '') +
+                (addBudovy ? layer_budovy : '') +
                 (addCesty ? style_cesty : ' ') +
-                '<Layer name="budovy" srs="'+proj+'">' + // same as above
-                '<StyleName>style_budovy</StyleName>' +
-                '<Datasource>' +
-                '<Parameter name="file">' + path.join( __dirname, 'data/budovy.shp' ) +'</Parameter>' +
-                '<Parameter name="type">shape</Parameter>' +
-                '</Datasource>' +
-                '</Layer>' +
-                (addLavicky ? style_lavicky : ' ') +
-                '<Layer name="lavicky" srs="'+proj+'">' + // same as above
-                '<StyleName>style_lavicky</StyleName>' +
-                '<Datasource>' +
-                '<Parameter name="file">' + path.join( __dirname, 'data/lavicky.shp' ) +'</Parameter>' +
-                '<Parameter name="type">shape</Parameter>' +
-                '</Datasource>' +
-                '</Layer>' + 
-                (addOdpad ? style_odpad : ' ') +
-                '<Layer name="odpad" srs="'+proj+'">' + // same as above
-                '<StyleName>style_odpad</StyleName>' +
-                '<Datasource>' +
-                '<Parameter name="file">' + path.join( __dirname, 'data/odpad.shp' ) +'</Parameter>' +
-                '<Parameter name="type">shape</Parameter>' +
-                '</Datasource>' +
-                '</Layer>' + 
+                (addCesty ? layer_cesty : ' ') +
                 (addParkovisko ? style_parkovisko : ' ') +
-                '<Layer name="parkovisko" srs="'+proj+'">' + // same as above
-                '<StyleName>style_parkovisko</StyleName>' +
-                '<Datasource>' +
-                '<Parameter name="file">' + path.join( __dirname, 'data/parkovisko.shp' ) +'</Parameter>' +
-                '<Parameter name="type">shape</Parameter>' +
-                '</Datasource>' +
-                '</Layer>' +
+                (addParkovisko ? layer_parkovisko : ' ') +
+                (addLavicky ? style_lavicky : ' ') +
+                (addLavicky ? layer_lavicky : ' ') +
+                (addOdpad ? style_odpad : ' ') +
+                (addOdpad ? layer_odpad : ' ') +
+                   
             '</Map>';
 // now we have a mapnik xml in variable schema that defines layers, data sources and styles of the layers
 

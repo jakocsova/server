@@ -20,7 +20,7 @@ server.get('/wms', function (request, response) {
     }else if (params.SERVICE==="WMS"&& params.REQUEST==="GetMap"){
      generateImage(params, response.sendFile.bind(response))
     }else{
-  response.send("nepodporovana metoda")
+  response.send("nepodporovana  metoda")
 }
 
 })
