@@ -21,7 +21,7 @@ var addLavicky=arg.LAYERS.includes('lavicky');
 var addOdpad=arg.LAYERS.includes('odpad');
 var addStravovanie=arg.LAYERS.includes('stravovanie');
 var addParkovisko=arg.LAYERS.includes('parkovisko');
-
+var addCintorin=arg.LAYERS.includes('cintorin');
 
 var proj = "+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813972222222 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +towgs84=589,76,480,0,0,0,0 +units=m +no_defs";
 
@@ -34,7 +34,7 @@ var style_budovy='<Style name="style_budovy">' + // style for layer "style_budov
     
 var style_cesty='<Style name="style_cesty">' + // style for layer "style_cesty"
     '<Rule>' +
-    '<MinScaleDenominator>9000</MinScaleDenominator>'+
+    '<MinScaleDenominator>8001</MinScaleDenominator>'+
     '<LineSymbolizer stroke="black" stroke-width="0.5"/>' + // style for lines
     '</Rule>' +
 
@@ -50,36 +50,83 @@ var style_cesty='<Style name="style_cesty">' + // style for layer "style_cesty"
 var style_lavicky='<Style name="style_lavicky">' + // style for layer "style_lavicky"
 '<Rule>' +
 '<MaxScaleDenominator>5866</MaxScaleDenominator>' +
-'<MinScaleDenominator>200</MinScaleDenominator>'+
+'<MinScaleDenominator>20</MinScaleDenominator>'+
 '<MarkersSymbolizer file="./icon/lavicka4.png" width="20" height="20"  />'+
 '</Rule>' +
 '</Style>' 
 
-var style_odpad='<Style name="style_odpad">' + // style for layer "style_lavicky"
+var style_odpad='<Style name="style_odpad">' + 
 '<Rule>' +
+"<Filter>[TYP] = 'Komunalny odpad'</Filter>" +
 '<MaxScaleDenominator>5866</MaxScaleDenominator>' +
-'<MinScaleDenominator>200</MinScaleDenominator>'+
+'<MinScaleDenominator>20</MinScaleDenominator>'+
 '<MarkersSymbolizer file="./icon/odpad.png" width="15" height="15" />'+
+'</Rule>' +
+
+'<Rule>' +
+"<Filter>[TYP] = 'Plast'</Filter>" +
+'<MaxScaleDenominator>5866</MaxScaleDenominator>' +
+'<MinScaleDenominator>20</MinScaleDenominator>'+
+'<MarkersSymbolizer file="./icon/odpad_oranzova.png" width="15" height="15" />'+
+'</Rule>' +
+
+'<Rule>' +
+"<Filter>[TYP] = 'Biologicky odpad'</Filter>" +
+'<MaxScaleDenominator>5866</MaxScaleDenominator>' +
+'<MinScaleDenominator>20</MinScaleDenominator>'+
+'<MarkersSymbolizer file="./icon/odpad_zelena.png" width="15" height="15" />'+
+'</Rule>' +
+'<Rule>' +
+"<Filter>[TYP] = 'Sklo'</Filter>" +
+'<MaxScaleDenominator>5866</MaxScaleDenominator>' +
+'<MinScaleDenominator>20</MinScaleDenominator>'+
+'<MarkersSymbolizer file="./icon/cierna.png" width="15" height="15" />'+
+'</Rule>' +
+
+'<Rule>' +
+"<Filter>[TYP] = 'Papier'</Filter>" +
+'<MaxScaleDenominator>5866</MaxScaleDenominator>' +
+'<MinScaleDenominator>20</MinScaleDenominator>'+
+'<MarkersSymbolizer file="./icon/fialova.png" width="15" height="15" />'+
+'</Rule>' +
+
+'<Rule>' +
+"<Filter>[TYP] = 'satstvo'</Filter>" +
+'<MaxScaleDenominator>5866</MaxScaleDenominator>' +
+'<MinScaleDenominator>20</MinScaleDenominator>'+
+'<MarkersSymbolizer file="./icon/modra.png" width="15" height="15" />'+
 '</Rule>' +
 '</Style>' 
 
-var style_stravovanie='<Style name="style_stravovanie">' + // style for layer "style_lavicky"
+var style_stravovanie='<Style name="style_stravovanie">' + 
 '<Rule>' +
 '<MaxScaleDenominator>5866</MaxScaleDenominator>' +
-'<MinScaleDenominator>200</MinScaleDenominator>'+
+'<MinScaleDenominator>20</MinScaleDenominator>'+
 '<MarkersSymbolizer file="./icon/food.png" width="22" height="22" />'+
 '</Rule>' +
 '</Style>' 
 
-var style_parkovisko='<Style name="style_parkovisko">' + // style for layer "style_lavicky"
+var style_parkovisko='<Style name="style_parkovisko">' + 
 '<Rule>' +
 '<LineSymbolizer stroke="black" stroke-width="0.8" />' + // style for lines
 '<PolygonSymbolizer fill="#40e0dd"  />' + 
 '</Rule>' +
 '<Rule>' +
 '<MaxScaleDenominator>5866</MaxScaleDenominator>' +
-'<MinScaleDenominator>200</MinScaleDenominator>'+
+'<MinScaleDenominator>20</MinScaleDenominator>'+
 '<TextSymbolizer placement="dummy" face-name="DejaVu Sans Condensed Bold" size="15" fill="#004080" allow-overlap="false" clip="false"> "P" </TextSymbolizer>'+
+'</Rule>' +
+'</Style>' 
+
+var style_cintorin='<Style name="style_cintorin">' + 
+'<Rule>' +
+'<LineSymbolizer stroke="black" stroke-width="0.7" />' + // style for lines
+'<PolygonSymbolizer fill="#b9f1a6"  />' + // style for polygons
+'</Rule>' +
+'<Rule>' +
+'<MaxScaleDenominator>3000</MaxScaleDenominator>' +
+'<MinScaleDenominator>100</MinScaleDenominator>'+
+'<PolygonPatternSymbolizer file="./icon/kriz6.png" />'+
 '</Rule>' +
 '</Style>' 
 
@@ -123,6 +170,14 @@ var layer_parkovisko = '<Layer name="parkovisko" srs="'+proj+'">' + // same as a
 '</Datasource>' +
 '</Layer>' 
 
+var layer_cintorin = '<Layer name="cintorin" srs="'+proj+'">' + // same as above
+'<StyleName>style_cintorin</StyleName>' +
+'<Datasource>' +
+'<Parameter name="file">' + path.join( __dirname, 'data/cintorin.shp' ) +'</Parameter>' +
+'<Parameter name="type">shape</Parameter>' +
+'</Datasource>' +
+'</Layer>' 
+
 var layer_lavicky = '<Layer name="lavicky" srs="'+proj+'">' + // same as above
 '<StyleName>style_lavicky</StyleName>' +
 '<Datasource>' +
@@ -139,6 +194,8 @@ var schema = '<Map background-color="#f6f6f6" srs="'+proj+'">' + // we define ba
                 (addCesty ? layer_cesty : '') +
                 (addParkovisko ? style_parkovisko : '') +
                 (addParkovisko ? layer_parkovisko : '') +
+                (addCintorin ? style_cintorin : '') +
+                (addCintorin ? layer_cintorin : '') +
                 (addLavicky ? style_lavicky : '') +
                 (addLavicky ? layer_lavicky : '') +
                 (addOdpad ? style_odpad : '') +
