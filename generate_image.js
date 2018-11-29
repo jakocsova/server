@@ -19,20 +19,31 @@ var addBudovy=arg.LAYERS.includes('budovy');
 var addCesty=arg.LAYERS.includes('cesty');
 var addLavicky=arg.LAYERS.includes('lavicky');
 var addOdpad=arg.LAYERS.includes('odpad');
+var addStravovanie=arg.LAYERS.includes('stravovanie');
 var addParkovisko=arg.LAYERS.includes('parkovisko');
+
 
 var proj = "+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813972222222 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +towgs84=589,76,480,0,0,0,0 +units=m +no_defs";
 
 var style_budovy='<Style name="style_budovy">' + // style for layer "style_budovy"
 '<Rule>' +
     '<LineSymbolizer stroke="black" stroke-width="0.8" />' + // style for lines
-    '<PolygonSymbolizer fill="#d1ed6d"  />' + // style for polygons
+    '<PolygonSymbolizer fill="#cfafaf"  />' + // style for polygons
     '</Rule>' +
     '</Style>' 
     
 var style_cesty='<Style name="style_cesty">' + // style for layer "style_cesty"
-'<Rule>' +
-    '<LineSymbolizer stroke="#a9a9a9" stroke-width="2.5" />' + // style for lines
+    '<Rule>' +
+    '<MinScaleDenominator>9000</MinScaleDenominator>'+
+    '<LineSymbolizer stroke="black" stroke-width="0.5"/>' + // style for lines
+    '</Rule>' +
+
+    '<Rule>' +
+    '<MaxScaleDenominator>8000</MaxScaleDenominator>'+
+     '<LineSymbolizer stroke="#ffff86" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" />' + // style for lines
+    '<LineSymbolizer stroke="#414141" stroke-width="1" stroke-linejoin="round" stroke-dasharray="6,2" stroke-linecap="round" />'+
+    '<LineSymbolizer stroke="#414141" stroke-width="0.5" offset="3" stroke-linecap="round" />' +
+    '<LineSymbolizer stroke="#414141" stroke-width="0.5" offset="-3" stroke-linecap="round" />' +
     '</Rule>' +
 '</Style>' 
 
@@ -43,6 +54,7 @@ var style_lavicky='<Style name="style_lavicky">' + // style for layer "style_lav
 '<MarkersSymbolizer file="./icon/lavicka4.png" width="20" height="20"  />'+
 '</Rule>' +
 '</Style>' 
+
 var style_odpad='<Style name="style_odpad">' + // style for layer "style_lavicky"
 '<Rule>' +
 '<MaxScaleDenominator>5866</MaxScaleDenominator>' +
@@ -51,10 +63,23 @@ var style_odpad='<Style name="style_odpad">' + // style for layer "style_lavicky
 '</Rule>' +
 '</Style>' 
 
+var style_stravovanie='<Style name="style_stravovanie">' + // style for layer "style_lavicky"
+'<Rule>' +
+'<MaxScaleDenominator>5866</MaxScaleDenominator>' +
+'<MinScaleDenominator>200</MinScaleDenominator>'+
+'<MarkersSymbolizer file="./icon/food.png" width="22" height="22" />'+
+'</Rule>' +
+'</Style>' 
+
 var style_parkovisko='<Style name="style_parkovisko">' + // style for layer "style_lavicky"
 '<Rule>' +
 '<LineSymbolizer stroke="black" stroke-width="0.8" />' + // style for lines
 '<PolygonSymbolizer fill="#40e0dd"  />' + 
+'</Rule>' +
+'<Rule>' +
+'<MaxScaleDenominator>5866</MaxScaleDenominator>' +
+'<MinScaleDenominator>200</MinScaleDenominator>'+
+'<TextSymbolizer placement="dummy" face-name="DejaVu Sans Condensed Bold" size="15" fill="#004080" allow-overlap="false" clip="false"> "P" </TextSymbolizer>'+
 '</Rule>' +
 '</Style>' 
 
@@ -82,6 +107,14 @@ var layer_odpad = '<Layer name="odpad" srs="'+proj+'">' + // same as above
 '</Datasource>' +
 '</Layer>'
 
+var layer_stravovanie = '<Layer name="stravovanie" srs="'+proj+'">' + // same as above
+'<StyleName>style_stravovanie</StyleName>' +
+'<Datasource>' +
+'<Parameter name="file">' + path.join( __dirname, 'data/stravovanie.shp' ) +'</Parameter>' +
+'<Parameter name="type">shape</Parameter>' +
+'</Datasource>' +
+'</Layer>'
+
 var layer_parkovisko = '<Layer name="parkovisko" srs="'+proj+'">' + // same as above
 '<StyleName>style_parkovisko</StyleName>' +
 '<Datasource>' +
@@ -102,15 +135,16 @@ var layer_lavicky = '<Layer name="lavicky" srs="'+proj+'">' + // same as above
 var schema = '<Map background-color="#f6f6f6" srs="'+proj+'">' + // we define background color of the map and its spatial reference system with epsg code of data used
                 (addBudovy ? style_budovy : '') +
                 (addBudovy ? layer_budovy : '') +
-                (addCesty ? style_cesty : ' ') +
-                (addCesty ? layer_cesty : ' ') +
-                (addParkovisko ? style_parkovisko : ' ') +
-                (addParkovisko ? layer_parkovisko : ' ') +
-                (addLavicky ? style_lavicky : ' ') +
-                (addLavicky ? layer_lavicky : ' ') +
-                (addOdpad ? style_odpad : ' ') +
-                (addOdpad ? layer_odpad : ' ') +
-                   
+                (addCesty ? style_cesty : '') +
+                (addCesty ? layer_cesty : '') +
+                (addParkovisko ? style_parkovisko : '') +
+                (addParkovisko ? layer_parkovisko : '') +
+                (addLavicky ? style_lavicky : '') +
+                (addLavicky ? layer_lavicky : '') +
+                (addOdpad ? style_odpad : '') +
+                (addOdpad ? layer_odpad : '') +
+                (addStravovanie ? style_stravovanie : '') +
+                (addStravovanie? layer_stravovanie : '') +   
             '</Map>';
 // now we have a mapnik xml in variable schema that defines layers, data sources and styles of the layers
 
